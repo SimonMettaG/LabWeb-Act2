@@ -24,7 +24,7 @@ Route::get('/clase', function () {
 // Path de la ruta, 'NombreDelController@FunciónDentroDelController'
 Route::get('/prueba-controller', 'PruebaController@index');
 
-Route::resource('coins', 'CoinsController');
+Route::resource('coins', 'CoinsController')->middleware('not_guest');
 
 Route::get('register', 'AuthController@register')
     ->middleware(['validate_hour'])
@@ -41,3 +41,10 @@ Route::post('login', 'AuthController@doLogin')
     ->name('auth.do-login');
 
 Route::any('logout', 'AuthController@logout')->name('auth.logout');
+
+Route::get('users', 'AuthController@showUsers')->name('users.index')->middleware(['not_user', 'not_guest']);
+Route::delete('users.destroy/{user}',  'AuthController@deleteUser')->name('users.destroy')->middleware(['not_admin', 'not_user', 'not_guest']);
+
+Route::get('dashboard', function() {
+    return view('extra.dashboard');
+})->middleware(['not_guest']);

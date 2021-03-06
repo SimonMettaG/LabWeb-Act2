@@ -20,7 +20,8 @@ class AuthController extends Controller
         Validator::make($req->all(), [
             'name' => 'required',
             'email' => 'required|email:rfc,dns',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'role' => 'required'
         ])->validate();
 
         $data['password'] = Hash::make($data['password']);
@@ -47,5 +48,15 @@ class AuthController extends Controller
         $req->session()->invalidate();
         $req->session()->regenerateToken();
         return redirect()->route('coins.index');
+    }
+
+    public function showUsers(Request $req) {
+        $users = User::all();
+        return view('users.index', ['users' => $users]);
+    }
+
+    public function deleteUser(Request $req, User $user) {
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }

@@ -21,6 +21,13 @@
         <label for="">Email</label>
         <input type="text" name="email" id="">
         <br>
+        <label for="">Role</label>
+        <select name="role" id="role">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+            <option value="Super">Super</option>
+        </select>
+        <br>
         <label for="">Password</label>
         <input type="password" name="password" id="">
         <br>

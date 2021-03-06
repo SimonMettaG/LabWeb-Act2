@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Exception;
 
-use Illuminate\Support\Carbon;
-
-class ValidateHour
+class NotUser
 {
     /**
      * Handle an incoming request.
@@ -18,11 +17,17 @@ class ValidateHour
      */
     public function handle(Request $request, Closure $next)
     {
-        $date = Carbon::now('America/Mexico_City');
-        $dateBlock = Carbon::parse('2030-03-05 20:20:20', 'America/Mexico_City');
-        if($date->gte($dateBlock)) {
-            return redirect()->route('coins.create');
+        try {
+            $user_rol = auth()->user()->role;
         }
+        catch(Exception $e){
+            $user_rol = null;
+        }
+
+        if($user_rol == 'User') {
+            return abort(403);
+        }
+
         return $next($request);
     }
 }
